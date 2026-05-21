@@ -1,5 +1,8 @@
 package backend.model;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,15 +19,27 @@ public class Paciente {
     private Long id;
 
     private String nome;
+
+    @Column(unique = true)
     private String cpf;
+
+
+    @Column(unique = true)
     private String email;
+    
     private String telefone;
-    private String dataNascimento;
+
+    private LocalDateTime dataCriacao;
+   
 
     public Long getId(){
         return id;
     }
 
+    public Paciente() {
+        this.dataCriacao = LocalDateTime.now();
+    }
+    
     public String getNome() {
         return nome;
     }
@@ -57,11 +72,11 @@ public class Paciente {
         this.telefone = telefone;
     }
 
-    public String getDataNasciento(){
-        return dataNascimento;
+    public LocalDateTime getDataCriacao(){
+        return dataCriacao;
     }
 
-    public void setDataNasciento (String dataNasciento) {
-        this.dataNascimento = dataNasciento;
+    public void setDataCriacao (LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 }
