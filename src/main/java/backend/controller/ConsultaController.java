@@ -2,6 +2,7 @@ package backend.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,22 +14,18 @@ import backend.repository.ConsultaRepository;
 
 @RestController
 @RequestMapping("/consultas")
+public class ConsultaController {
 
-public class ConsultaController{
-
-    private final ConsultaRepository repository;
-
-    public ConsultaController(ConsultaRepository repository){
-        this.repository = repository;
-    }
+    @Autowired
+    private ConsultaRepository consultaRepository;
 
     @GetMapping
     public List<Consulta> listar() {
-        return repository.findAll();
+        return consultaRepository.findAll();
     }
 
     @PostMapping
     public Consulta salvar(@RequestBody Consulta consulta) {
-        return repository.save(consulta);
+        return consultaRepository.save(consulta);
     }
 }
