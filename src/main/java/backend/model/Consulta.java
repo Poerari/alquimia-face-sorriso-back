@@ -16,6 +16,7 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String descricao;
 
     private String motivoCancelamento;
@@ -35,6 +36,10 @@ public class Consulta {
     @ManyToOne
     @JoinColumn(name = "dentista_id")
     private Dentista dentista;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
     public Long getId() {
         return id;
@@ -102,5 +107,13 @@ public class Consulta {
 
     public void setDentista(Dentista dentista) {
         this.dentista = dentista;
+    }
+
+    public Usuario setUsuario(){
+        return usuario;
+    }
+
+    public void getUsuario( Usuario usuario){
+        this.usuario = usuario;
     }
 }
