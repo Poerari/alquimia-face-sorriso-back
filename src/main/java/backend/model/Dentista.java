@@ -2,11 +2,17 @@ package backend.model;
 
 import java.time.LocalDateTime;
 
+import java.util.List;
+import jakarta.persistence.JoinColumn;/* Coluna de ligação */
+import jakarta.persistence.JoinTable; /* Tabela Intermediária */
+import jakarta.persistence.ManyToMany;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 
 
 
@@ -90,7 +96,13 @@ public class Dentista {
         this.dataCriacao = dataCriacao;
     }
 
-    
 
+    @ManyToMany /* Muitos para muitos  */
+    @JoinTable( /* Intermediária - banco não sabe ligar ManyToMany sozinho  */
+       name = "dentista_especialidade",  /* Nome tabela intermediária */
+    joinColumns = @JoinColumn(name = "dentista_id"),  /* Cria a coluna dentista_id */
+    inverseJoinColumns = @JoinColumn(name = "especialidade_id") /* Cria a coluna especialidade_id */
+)
+    private List<Especialidade> especialidades;
     
 }
