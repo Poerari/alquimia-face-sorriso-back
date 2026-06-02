@@ -1,5 +1,7 @@
 package backend.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.model.Especialidade;
-
 import backend.repository.EspecialidadeRepository;
 
-import java.util.List;
 
 @RestController /* essa classe vai responder requisições HTTP */
 @RequestMapping("/especialidades") /* Cria a URL base */
@@ -42,14 +42,18 @@ public class EspecialidadeController {  /*Spring, injeta o repository aqui autom
         .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
     }
 
-    @PutMapping ("/{id}") /* Editar/atualizar dados existentes. */
+    @PutMapping("/{id}")
     public Especialidade atualizar(
-        @PathVariable Long id,  /*pega o ID da URL */
-        @RequestBody Especialidade especialidade){ /* pega o JSON enviado */
+            @PathVariable Long id,
+            @RequestBody Especialidade especialidadeAtualizada) {
 
-            especialidade.setId(id); /* o objeto que será atualizado é o ID 1 */
-            return repository.save(especialidade); /* Se não tiver ID ele cria e se tiver ele atualiza */
-        }
+        Especialidade especialidade = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
+
+        especialidade.setNome(especialidadeAtualizada.getNome());
+
+        return repository.save(especialidade);
+    }
 
     @DeleteMapping("/{id}") /* DELETE /especialidades/1 */
     public void deletar(@PathVariable Long id){ /* Não retorna nada */

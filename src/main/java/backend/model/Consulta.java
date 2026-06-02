@@ -41,6 +41,12 @@ public class Consulta {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    
+
+    public Consulta() {
+    this.dataRegistro = LocalDateTime.now();
+    }
+
     public Long getId() {
         return id;
     }
@@ -109,11 +115,11 @@ public class Consulta {
         this.dentista = dentista;
     }
 
-    public Usuario setUsuario(){
-        return usuario;
+    public Usuario getUsuario() {
+    return usuario;
     }
 
-    public void getUsuario( Usuario usuario){
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 }

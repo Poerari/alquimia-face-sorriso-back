@@ -1,17 +1,18 @@
 package backend.model;
 
 import java.time.LocalDateTime;
-
 import java.util.List;
-import jakarta.persistence.JoinColumn;/* Coluna de ligação */
-import jakarta.persistence.JoinTable; /* Tabela Intermediária */
-import jakarta.persistence.ManyToMany;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Column;/* Coluna de ligação */
+import jakarta.persistence.Entity; /* Tabela Intermediária */
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 
 
@@ -56,11 +57,11 @@ public class Dentista {
         this.nome = nome;
     }
 
-    public String setCpf (){
-        return cpf;
+    public String getCpf(){
+    return cpf;
     }
 
-    public void getCpf (String cpf){
+    public void setCpf(String cpf){
         this.cpf = cpf;
     }
 
@@ -96,13 +97,21 @@ public class Dentista {
         this.dataCriacao = dataCriacao;
     }
 
+    public List<Especialidade> getEspecialidades() {
+    return especialidades;
+}
 
-    @ManyToMany /* Muitos para muitos  */
-    @JoinTable( /* Intermediária - banco não sabe ligar ManyToMany sozinho  */
-       name = "dentista_especialidade",  /* Nome tabela intermediária */
-    joinColumns = @JoinColumn(name = "dentista_id"),  /* Cria a coluna dentista_id */
-    inverseJoinColumns = @JoinColumn(name = "especialidade_id") /* Cria a coluna especialidade_id */
-)
+    public void setEspecialidades(List<Especialidade> especialidades) {
+        this.especialidades = especialidades;
+    }
+
+    @JsonIgnoreProperties("dentistas")
+    @ManyToMany
+    @JoinTable(
+        name = "dentista_especialidade",
+        joinColumns = @JoinColumn(name = "dentista_id"),
+        inverseJoinColumns = @JoinColumn(name = "especialidade_id")
+    )
     private List<Especialidade> especialidades;
     
 }
