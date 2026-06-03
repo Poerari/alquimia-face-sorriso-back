@@ -11,6 +11,10 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Consulta {
+    
+    public Consulta() {
+    this.dataRegistro = LocalDateTime.now();
+}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,12 +44,6 @@ public class Consulta {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
-
-    
-
-    public Consulta() {
-    this.dataRegistro = LocalDateTime.now();
-    }
 
     public Long getId() {
         return id;

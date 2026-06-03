@@ -15,6 +15,10 @@ import lombok.Setter;
 @Setter
 public class Usuario {
     
+    public Usuario() {
+    this.dataCriacao = LocalDateTime.now();
+    this.ativo = true;
+}
     
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY) /*o banco crie um número automaticamente*/

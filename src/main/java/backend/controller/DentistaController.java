@@ -29,6 +29,12 @@ public class DentistaController {
         return repository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Dentista buscarPorId(@PathVariable Long id){
+        return repository.findById(id)
+                .orElseThrow();
+    }
+
     @PostMapping
     public Dentista salvar(@RequestBody Dentista dentista) {
         return repository.save(dentista);
