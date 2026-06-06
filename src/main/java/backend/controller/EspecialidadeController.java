@@ -2,6 +2,7 @@ package backend.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import backend.repository.EspecialidadeRepository;
 
 @RestController /* essa classe vai responder requisições HTTP */
 @RequestMapping("/especialidades") /* Cria a URL base */
+@CrossOrigin("*")
 public class EspecialidadeController {  /*Spring, injeta o repository aqui automaticamente*/
     
 
