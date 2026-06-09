@@ -34,10 +34,32 @@ public class ConsultaController {
     @Autowired
     private PacienteRepository pacienteRepository;
 
-    @GetMapping
-    public List<Consulta> listar() {
-        return consultaRepository.findAll();
+   @GetMapping
+   public List<Consulta> listar() {
+
+    List<Consulta> consultas =
+        consultaRepository.findAll();
+
+    for (Consulta consulta : consultas) {
+
+        if (
+            "AGENDADA".equals(consulta.getStatus())
+            &&
+            consulta.getDataInicio()
+                .isBefore(java.time.LocalDateTime.now())
+        ) {
+
+            consulta.setStatus("ATRASADA");
+
+            consultaRepository.save(consulta);
+
+        }
+
     }
+
+    return consultas;
+
+}
 
     @GetMapping("/{id}")
     public Consulta buscarPorId(@PathVariable Long id) {
@@ -46,22 +68,47 @@ public class ConsultaController {
 }
 
 
-    @PutMapping("/{id}")
+@PutMapping("/{id}")
     public Consulta atualizar(@PathVariable Long id,
-                          @RequestBody Consulta consultaAtualizada) {
+                              @RequestBody Consulta consultaAtualizada) {
 
         Consulta consulta = consultaRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
 
         consulta.setDescricao(consultaAtualizada.getDescricao());
         consulta.setStatus(consultaAtualizada.getStatus());
         consulta.setDataInicio(consultaAtualizada.getDataInicio());
         consulta.setDataFim(consultaAtualizada.getDataFim());
-        consulta.setMotivoCancelamento(
-                consultaAtualizada.getMotivoCancelamento());
+        consulta.setMotivoCancelamento(consultaAtualizada.getMotivoCancelamento());
+
+        if (
+            "CONCLUIDA".equals(consultaAtualizada.getStatus())
+            &&
+            consulta.getDataInicio().isAfter(java.time.LocalDateTime.now())
+        ) {
+
+            throw new RuntimeException(
+                "Não é possível concluir uma consulta futura."
+        );
+
+        }
+
+        if (consultaAtualizada.getDentista() != null && consultaAtualizada.getDentista().getId() != null) {
+            Dentista dentista = dentistaRepository
+                    .findById(consultaAtualizada.getDentista().getId())
+                    .orElseThrow(() -> new RuntimeException("Dentista não encontrado"));
+            consulta.setDentista(dentista);
+        }
+
+        if (consultaAtualizada.getPaciente() != null && consultaAtualizada.getPaciente().getId() != null) {
+            Paciente paciente = pacienteRepository
+                    .findById(consultaAtualizada.getPaciente().getId())
+                    .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+            consulta.setPaciente(paciente);
+        }
 
         return consultaRepository.save(consulta);
-}
+    }
 
     @PostMapping
     public Consulta salvar(@RequestBody Consulta consulta) {
