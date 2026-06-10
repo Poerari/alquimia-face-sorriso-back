@@ -1,6 +1,7 @@
 package backend.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -112,6 +113,6 @@ public class Dentista {
         joinColumns = @JoinColumn(name = "dentista_id"),
         inverseJoinColumns = @JoinColumn(name = "especialidade_id")
     )
-    private List<Especialidade> especialidades;
+    private List<Especialidade> especialidades = new ArrayList<>();
     
 }

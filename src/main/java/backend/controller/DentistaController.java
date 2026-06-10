@@ -14,12 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.model.Dentista;
+import backend.model.Especialidade;
 import backend.repository.DentistaRepository;
+import backend.repository.EspecialidadeRepository;
 
 @RestController
 @RequestMapping("/dentistas")
 @CrossOrigin("*")
 public class DentistaController {
+
+    @Autowired
+    private EspecialidadeRepository especialidadeRepository;
 
     @Autowired
     private DentistaRepository repository;
@@ -37,21 +42,48 @@ public class DentistaController {
 
     @PostMapping
     public Dentista salvar(@RequestBody Dentista dentista) {
-        return repository.save(dentista);
+
+    if (dentista.getEspecialidades() != null) {
+
+        List<Especialidade> especialidades =
+            dentista.getEspecialidades()
+                    .stream()
+                    .map(e -> especialidadeRepository
+                            .findById(e.getId())
+                            .orElseThrow())
+                    .toList();
+
+        dentista.setEspecialidades(especialidades);
     }
 
-    @PutMapping("/{id}")
-    public Dentista atualizar(@PathVariable Long id,
-                          @RequestBody Dentista dentistaAtualizado) {
+    return repository.save(dentista);
+}
 
-        Dentista dentista = repository.findById(id)
-                .orElseThrow();
+@PutMapping("/{id}")
+    public Dentista atualizar(
+            @PathVariable Long id,
+            @RequestBody Dentista dentistaAtualizado) {
+                
+        Dentista dentista = repository.findById(id).orElseThrow();
 
         dentista.setNome(dentistaAtualizado.getNome());
         dentista.setCpf(dentistaAtualizado.getCpf());
         dentista.setEmail(dentistaAtualizado.getEmail());
         dentista.setCro(dentistaAtualizado.getCro());
         dentista.setAtivo(dentistaAtualizado.getAtivo());
+
+        if (dentistaAtualizado.getEspecialidades() != null) {
+            
+            List<Especialidade> especialidadesNovas = dentistaAtualizado.getEspecialidades()
+                    .stream()
+                    .map(e -> especialidadeRepository.findById(e.getId()).orElseThrow())
+                    .collect(java.util.stream.Collectors.toList());
+            dentista.getEspecialidades().clear();
+            dentista.getEspecialidades().addAll(especialidadesNovas);
+        } else {
+            
+            dentista.getEspecialidades().clear();
+        }
 
         return repository.save(dentista);
     }
