@@ -41,22 +41,26 @@ public class UsuarioController {
         ));
     }
 
-    @PutMapping("/{id}")
-    public Usuario atualizar(@PathVariable Long id,
-                         @RequestBody Usuario usuarioAtualizado) {
+   @PutMapping("/{id}")
+    public Usuario atualizar(
+            @PathVariable Long id,
+            @RequestBody Usuario usuarioAtualizado) {
 
-    Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow();
-            
+        System.out.println("=== ATUALIZANDO USUARIO ===");
 
-    usuario.setNome(usuarioAtualizado.getNome());
-    usuario.setCpf(usuarioAtualizado.getCpf());
-    usuario.setEmail(usuarioAtualizado.getEmail());
-    usuario.setSenha(usuarioAtualizado.getSenha());
-    usuario.setPerfil(usuarioAtualizado.getPerfil());
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow();
 
-    return usuarioRepository.save(usuario);
-    }
+        usuario.setNome(usuarioAtualizado.getNome());
+        usuario.setCpf(usuarioAtualizado.getCpf());
+        usuario.setEmail(usuarioAtualizado.getEmail());
+        usuario.setSenha(usuarioAtualizado.getSenha());
+        usuario.setPerfil(usuarioAtualizado.getPerfil());
+        
+        usuario.setAtivo(usuarioAtualizado.getAtivo());
+
+        return usuarioRepository.save(usuario);
+}
 
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id) {
@@ -65,6 +69,12 @@ public class UsuarioController {
 
     @PostMapping
     public Usuario cadastrar(@RequestBody Usuario usuario) {
+
+        System.out.println(usuario.getNome());
+        System.out.println(usuario.getCpf());
+        System.out.println(usuario.getEmail());
+        System.out.println(usuario.getSenha());
+        System.out.println(usuario.getPerfil());
 
         return usuarioRepository.save(usuario);
 }

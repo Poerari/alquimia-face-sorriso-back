@@ -21,8 +21,8 @@ public class Usuario {
 }
     
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY) /*o banco crie um número automaticamente*/
-    private Long id; /* Long - Tipo primitivo de dado com maior capacidade de armazenamento*/
+    @GeneratedValue(strategy= GenerationType.IDENTITY) 
+    private Long id; 
 
     public String getNome() {
     return nome;
@@ -64,26 +64,26 @@ public void setPerfil(String perfil) {
     this.perfil = perfil;
 }
 
-    @Column(nullable = false) /* Obrigatorio o preenchimento do campo */
+    @Column(nullable = false)
     private String nome; 
 
-    @Column(unique = true, nullable = false) /* Não deixa repetir o mesmo CPF */
+    @Column(unique = true, nullable = false) 
     private String cpf;
 
-    @Column(nullable = false) /* Obrigatorio o preenchimento do campo */
+    @Column(nullable = false) 
     private String email;
 
-    @Column(nullable = false) /* Obrigatorio o preenchimento do campo */
+    @Column(nullable = false) 
     private String senha;
 
     private LocalDateTime dataCriacao;
 
     private LocalDateTime ultimoLogin;
     
-    @Column(nullable = false) /* Obrigatorio o preenchimento do campo */
+    @Column(nullable = false) 
     private String perfil;  
 
-    private boolean ativo;
+    private Boolean ativo;
 
     
 } 
