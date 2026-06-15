@@ -8,7 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 public class Consulta {
     
@@ -29,6 +33,8 @@ public class Consulta {
 
     private LocalDateTime dataFim;
 
+    private Integer duracaoMinutos;
+
     private LocalDateTime dataRegistro;
 
     private String status;
@@ -45,79 +51,5 @@ public class Consulta {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    public Long getId() {
-        return id;
-    }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getMotivoCancelamento() {
-        return motivoCancelamento;
-    }
-
-    public void setMotivoCancelamento(String motivoCancelamento) {
-        this.motivoCancelamento = motivoCancelamento;
-    }
-
-    public LocalDateTime getDataInicio() {
-        return dataInicio;
-    }
-
-    public void setDataInicio(LocalDateTime dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    public LocalDateTime getDataFim() {
-        return dataFim;
-    }
-
-    public void setDataFim(LocalDateTime dataFim) {
-        this.dataFim = dataFim;
-    }
-
-    public LocalDateTime getDataRegistro() {
-        return dataRegistro;
-    }
-
-    public void setDataRegistro(LocalDateTime dataRegistro) {
-        this.dataRegistro = dataRegistro;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public Dentista getDentista() {
-        return dentista;
-    }
-
-    public void setDentista(Dentista dentista) {
-        this.dentista = dentista;
-    }
-
-    public Usuario getUsuario() {
-    return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 }
