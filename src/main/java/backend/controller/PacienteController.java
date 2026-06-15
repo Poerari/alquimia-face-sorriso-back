@@ -57,6 +57,66 @@ public class PacienteController {
 
     @PostMapping
     public Paciente salvar(@RequestBody Paciente paciente) {
-        return repository.save(paciente);
+
+    if (repository.existsByCpf(paciente.getCpf())) {
+
+        throw new org.springframework.web.server.ResponseStatusException(
+            org.springframework.http.HttpStatus.BAD_REQUEST,
+            "Já existe um paciente cadastrado com este CPF."
+        );
+
     }
+
+    if (repository.existsByEmail(paciente.getEmail())) {
+
+        throw new org.springframework.web.server.ResponseStatusException(
+            org.springframework.http.HttpStatus.BAD_REQUEST,
+            "Já existe um paciente cadastrado com este e-mail."
+        );
+
+    }
+
+    if (
+    paciente.getCpf() == null
+    ||
+    !paciente.getCpf().matches("\\d{11}")
+) {
+
+    throw new org.springframework.web.server.ResponseStatusException(
+        org.springframework.http.HttpStatus.BAD_REQUEST,
+        "CPF inválido. Informe 11 números."
+    );
+
+}
+
+    if (
+        paciente.getEmail() == null
+        ||
+        !paciente.getEmail().matches(
+            "^[A-Za-z0-9+_.-]+@(.+)$"
+        )
+    ) {
+
+        throw new org.springframework.web.server.ResponseStatusException(
+            org.springframework.http.HttpStatus.BAD_REQUEST,
+            "E-mail inválido."
+        );
+
+    }
+
+    if (
+    paciente.getTelefone() == null
+    ||
+    !paciente.getTelefone().matches("\\d{10,11}")
+) {
+
+    throw new org.springframework.web.server.ResponseStatusException(
+        org.springframework.http.HttpStatus.BAD_REQUEST,
+        "Telefone inválido."
+    );
+
+}
+
+    return repository.save(paciente);
+}
 }
