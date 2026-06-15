@@ -34,6 +34,7 @@ public class Dentista {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String cro;
     
     private Boolean ativo;
