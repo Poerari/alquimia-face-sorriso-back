@@ -23,7 +23,7 @@ import backend.repository.DentistaRepository;
 import backend.repository.PacienteRepository;
 
 @RestController
-@RequestMapping("/consultas")
+@RequestMapping("/api/consultas")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ConsultaController {
 

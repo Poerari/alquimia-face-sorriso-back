@@ -51,5 +51,9 @@ public class Consulta {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @ManyToOne
+    @JoinColumn(name = "especialidade_id")
+    private Especialidade especialidade;
+
 
 }
