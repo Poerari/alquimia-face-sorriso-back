@@ -17,10 +17,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import backend.model.Consulta;
 import backend.model.Dentista;
+import backend.model.Especialidade;
 import backend.model.Paciente;
 import backend.repository.ConsultaRepository;
 import backend.repository.DentistaRepository;
+import backend.repository.EspecialidadeRepository;
 import backend.repository.PacienteRepository;
+
 
 @RestController
 @RequestMapping("/api/consultas")
@@ -35,6 +38,9 @@ public class ConsultaController {
 
     @Autowired
     private PacienteRepository pacienteRepository;
+
+    @Autowired
+    private EspecialidadeRepository especialidadeRepository;
 
    @GetMapping
    public List<Consulta> listar() {
@@ -70,7 +76,7 @@ public class ConsultaController {
 }
 
     @PutMapping("/{id}")
-public Consulta atualizar(
+    public Consulta atualizar(
         @PathVariable Long id,
         @RequestBody Consulta consultaAtualizada) {
 
@@ -178,32 +184,56 @@ public Consulta atualizar(
     }
 
     if (
-        consultaAtualizada.getPaciente() != null
+    consultaAtualizada.getPaciente() != null
+    &&
+    consultaAtualizada.getPaciente().getId() != null
+) {
+
+    Paciente paciente =
+        pacienteRepository
+            .findById(
+                consultaAtualizada
+                    .getPaciente()
+                    .getId()
+            )
+            .orElseThrow(() ->
+                new RuntimeException(
+                    "Paciente não encontrado"
+                )
+            );
+
+    consulta.setPaciente(paciente);
+}
+
+    if (
+        consultaAtualizada.getEspecialidade() != null
         &&
-        consultaAtualizada.getPaciente().getId() != null
+        consultaAtualizada.getEspecialidade().getId() != null
     ) {
 
-        Paciente paciente =
-            pacienteRepository
+        Especialidade especialidade =
+            especialidadeRepository
                 .findById(
                     consultaAtualizada
-                        .getPaciente()
+                        .getEspecialidade()
                         .getId()
                 )
                 .orElseThrow(() ->
                     new RuntimeException(
-                        "Paciente não encontrado"
+                        "Especialidade não encontrada"
                     )
                 );
 
-        consulta.setPaciente(paciente);
+        consulta.setEspecialidade(especialidade);
     }
 
     return consultaRepository.save(consulta);
-}
+
+        
+    }
 
     @PostMapping
-public Consulta salvar(@RequestBody Consulta consulta) {
+    public Consulta salvar(@RequestBody Consulta consulta) {
 
     Dentista dentista = dentistaRepository
         .findById(consulta.getDentista().getId())
@@ -211,6 +241,10 @@ public Consulta salvar(@RequestBody Consulta consulta) {
 
     Paciente paciente = pacienteRepository
         .findById(consulta.getPaciente().getId())
+        .orElseThrow();
+
+     Especialidade especialidade = especialidadeRepository
+        .findById(consulta.getEspecialidade().getId())
         .orElseThrow();
 
     // NÃO PERMITE DATAS PASSADAS
@@ -243,10 +277,14 @@ public Consulta salvar(@RequestBody Consulta consulta) {
             HttpStatus.BAD_REQUEST,
             "Este dentista já possui uma consulta neste horário."
         );
+
+        
     }
 
     consulta.setDentista(dentista);
     consulta.setPaciente(paciente);
+    consulta.setEspecialidade(especialidade);
+    
 
     return consultaRepository.save(consulta);
 }
