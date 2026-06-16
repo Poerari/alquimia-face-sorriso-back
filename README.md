@@ -90,7 +90,7 @@ Esta API foi desenvolvida para servir ao projeto front-end em Angular.
 Repositório Front-end: Alquimia Face Sorriso - Front-end
 Configuração de CORS: A API está configurada para permitir requisições vindas de http://localhost:4200 para garantir a comunicação perfeita com o ecossistema Angular.
 
-### 👩‍💻 Autora
+### 👩‍💻 Desenvolvedora
 Gabriela Poerari Baptista
 
 ### 📌 Observações Finais
